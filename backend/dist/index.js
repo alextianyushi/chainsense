@@ -26,7 +26,7 @@ const REQUIRED_AMOUNT = process.env.REQUIRED_AMOUNT ? BigInt(process.env.REQUIRE
 if (!REQUIRED_RECIPIENT || REQUIRED_AMOUNT === null) {
     throw new Error("Missing REQUIRED_RECIPIENT or REQUIRED_AMOUNT in .env file.");
 }
-app.use((0, cors_1.default)({ origin: 'http://localhost:5173' }));
+app.use((0, cors_1.default)({ origin: ['http://localhost:5173'] }));
 app.use(express_1.default.json());
 // Track user storage usage
 const userUsage = {};

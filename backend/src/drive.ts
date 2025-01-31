@@ -63,9 +63,12 @@ export async function uploadFileFromMemory(
  * Download a file from Auto Drive
  * @param cid The CID of the file
  * @param password Optional decryption password
- * @returns The file content
+ * @returns The file content as a Buffer, JSON, or string
  */
-export async function downloadFileFromAutoDrive(cid: string, password?: string): Promise<object | string> {
+export async function downloadFileFromAutoDrive(
+  cid: string,
+  password?: string
+): Promise<object | string | Buffer> {
   try {
     const stream = await downloadFile(api, cid, password);
     let fileBuffer = Buffer.alloc(0);
@@ -74,10 +77,24 @@ export async function downloadFileFromAutoDrive(cid: string, password?: string):
       fileBuffer = Buffer.concat([fileBuffer, chunk]);
     }
 
-    const fileContent = fileBuffer.toString('utf-8');
-    return JSON.parse(fileContent);
+    // Try Json
+    try {
+      const jsonContent = JSON.parse(fileBuffer.toString('utf-8'));
+      return jsonContent; // If successful, return Json
+    } catch (jsonError) {
+      console.warn("File is not JSON, attempting to parse as text.");
+    }
+
+    // Try txt
+    const textContent = fileBuffer.toString('utf-8');
+    if (/^[\x20-\x7E\s\u00A0-\uFFFF]+$/.test(textContent)) { // 
+      return textContent;
+    }
+
+    // Return buffer otherwise
+    return fileBuffer;
   } catch (error) {
-    console.error('Download failed:', error);
+    console.error("Download failed:", error);
     throw error;
   }
 }

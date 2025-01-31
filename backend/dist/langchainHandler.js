@@ -74,7 +74,19 @@ const handleLangChainChat = (userMessage, userId) => __awaiter(void 0, void 0, v
         }
         try {
             const fileContent = yield (0, drive_1.downloadFileFromAutoDrive)(cid, password);
-            userConversations[userId].memory += `\n${JSON.stringify(fileContent, null, 2)}`;
+            let formattedMemory;
+            if (typeof fileContent === 'object') {
+                formattedMemory = JSON.stringify(fileContent, null, 2); // JSON 格式
+            }
+            else if (typeof fileContent === 'string') {
+                formattedMemory = fileContent; // 纯文本格式
+            }
+            else {
+                console.warn('Non-textual file detected. Skipping memory update.');
+                return 'Loaded file is not in a readable format (JSON or text).';
+            }
+            // 追加到用户的对话历史
+            userConversations[userId].memory += `\n${formattedMemory}`;
             return `Memory loaded! CID: ${cid}`;
         }
         catch (error) {

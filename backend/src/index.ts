@@ -16,7 +16,7 @@ if (!REQUIRED_RECIPIENT || REQUIRED_AMOUNT === null) {
   throw new Error("Missing REQUIRED_RECIPIENT or REQUIRED_AMOUNT in .env file.");
 }
 
-app.use(cors({ origin: ['http://localhost:5173', 'https://chainsense.vercel.app'] }));
+app.use(cors({ origin: ['https://chainsense.vercel.app'] }));
 app.use(express.json());
 
 // Track user storage usage

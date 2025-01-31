@@ -88,7 +88,7 @@ function uploadFileFromMemory(chatRecords, filename, password, userId) {
  * Download a file from Auto Drive
  * @param cid The CID of the file
  * @param password Optional decryption password
- * @returns The file content
+ * @returns The file content as a Buffer, JSON, or string
  */
 function downloadFileFromAutoDrive(cid, password) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -111,11 +111,24 @@ function downloadFileFromAutoDrive(cid, password) {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
-            const fileContent = fileBuffer.toString('utf-8');
-            return JSON.parse(fileContent);
+            // 尝试 JSON 解析
+            try {
+                const jsonContent = JSON.parse(fileBuffer.toString('utf-8'));
+                return jsonContent; // 如果解析成功，返回 JSON
+            }
+            catch (jsonError) {
+                console.warn("File is not JSON, attempting to parse as text.");
+            }
+            // 尝试文本解析
+            const textContent = fileBuffer.toString('utf-8');
+            if (/^[\x20-\x7E\s\u00A0-\uFFFF]+$/.test(textContent)) { // 包含更多 Unicode 字符
+                return textContent;
+            }
+            // 如果既不是 JSON 也不是文本，返回 Buffer
+            return fileBuffer;
         }
         catch (error) {
-            console.error('Download failed:', error);
+            console.error("Download failed:", error);
             throw error;
         }
     });

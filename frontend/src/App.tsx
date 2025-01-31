@@ -280,6 +280,10 @@ function App() {
             }
           }
           setPaymentInProgress(false);
+
+          // Add additional message after payment process
+          const retryMessage: Message = { sender: 'ai', text: 'Try command again after payment.' };
+          setMessages((prev) => [...prev, retryMessage]);
         }
       } finally {
         setLoading(false);
@@ -307,17 +311,40 @@ function App() {
 
       // Call /api/load
       try {
-        const response = await axios.post<{ message: string }>(
+        const response = await axios.post<{ data: any }>(
           'https://chainsense.onrender.com/api/load',
           { userId, cid, password },
           { headers: { 'Content-Type': 'application/json' } }
         );
 
-        const loadMessage: Message = { sender: 'ai', text: response.data.message };
-        setMessages((prev) => [...prev, loadMessage]);
+        // Process the loaded data
+        const loadedData = response.data.data;
+        let formattedMessage = '';
+
+        // Check if loadedData is defined and process it
+        if (loadedData) {
+          if (Array.isArray(loadedData)) {
+            // If the data is an array, concatenate items into a single message
+            formattedMessage = loadedData.join('\n');
+          } else {
+            // If the data is a single object or string, convert it to a string
+            formattedMessage = JSON.stringify(loadedData);
+          }
+        }
+
+        // Construct the success message
+        let successText = `Data CID ${cid} is loaded successfully!`;
+        if (formattedMessage) {
+          successText += `\n${formattedMessage}`;
+        }
+
+        // Add a success message to the chat with CID and the loaded data
+        const successMessage: Message = { sender: 'ai', text: successText };
+        setMessages((prev) => [...prev, successMessage]);
+
       } catch (error: any) {
-        console.error('Failed to load conversation:', error.response?.data || error.message);
-        const errorText = error.response?.data?.error || 'Failed to load conversation.';
+        console.error('Failed to load data:', error.response?.data || error.message);
+        const errorText = error.response?.data?.error || 'Failed to load data.';
         const errorMessage: Message = { sender: 'ai', text: errorText };
         setMessages((prev) => [...prev, errorMessage]);
 
@@ -339,6 +366,10 @@ function App() {
             }
           }
           setPaymentInProgress(false);
+
+          // Add additional message after payment process
+          const retryMessage: Message = { sender: 'ai', text: 'Try command again after payment.' };
+          setMessages((prev) => [...prev, retryMessage]);
         }
       } finally {
         setLoading(false);
