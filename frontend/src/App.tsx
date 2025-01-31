@@ -219,9 +219,15 @@ function App() {
     }
   };
 
-  // Modify the sendMessage function to use waitForTransaction and ensure resetUsage is called correctly
+  // Modify the sendMessage function to require login for all messages
   const sendMessage = async () => {
     if (input.trim() === '') return;
+
+    // Ensure the user has connected their wallet
+    if (!userId.startsWith('0x')) {
+      alert('You must connect a wallet first to send messages.');
+      return;
+    }
 
     // Trim the input
     const trimmedInput = input.trim();
@@ -234,13 +240,6 @@ function App() {
 
     // Check if it's a command
     if (trimmedInput.startsWith('/save')) {
-      // Ensure the user has connected their wallet
-      if (!userId.startsWith('0x')) {
-        alert('You must connect a wallet first to use the /save command.');
-        setLoading(false);
-        return;
-      }
-
       // Extract the password
       const parts = trimmedInput.split(' ');
       if (parts.length < 2) {
@@ -296,13 +295,6 @@ function App() {
     }
 
     if (trimmedInput.startsWith('/load')) {
-      // Ensure the user has connected their wallet
-      if (!userId.startsWith('0x')) {
-        alert('You must connect a wallet first to use the /load command.');
-        setLoading(false);
-        return;
-      }
-
       // Extract CID and password
       const parts = trimmedInput.split(' ');
       if (parts.length < 3) {

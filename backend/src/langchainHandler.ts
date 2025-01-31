@@ -22,7 +22,7 @@ const userConversations: {
 export const handleLangChainChat = async (userMessage: string, userId: string): Promise<string> => {
   const chat = new ChatOpenAI({
     temperature: 0.5,
-    modelName: 'gpt-4',
+    modelName: 'gpt-4o',
     openAIApiKey: process.env.OPENAI_API_KEY,
   });
 
@@ -71,37 +71,37 @@ export const handleLangChainChat = async (userMessage: string, userId: string): 
   }
 
   /** ✅ Ensure userId is a valid wallet address before loading */
-if (userMessage.startsWith('/load')) {
-  if (!userId.startsWith("0x")) {
-    return 'Wallet connection required to load data.';
-  }
-
-  const [_, cid, password] = userMessage.split(' ');
-  if (!cid || !password) {
-    return 'Please provide both CID and password: /load CID password';
-  }
-
-  try {
-    const fileContent = await downloadFileFromAutoDrive(cid, password);
-
-    let formattedMemory: string;
-    if (typeof fileContent === 'object') {
-      formattedMemory = JSON.stringify(fileContent, null, 2); // JSON 格式
-    } else if (typeof fileContent === 'string') {
-      formattedMemory = fileContent; // 纯文本格式
-    } else {
-      console.warn('Non-textual file detected. Skipping memory update.');
-      return 'Loaded file is not in a readable format (JSON or text).';
+  if (userMessage.startsWith('/load')) {
+    if (!userId.startsWith("0x")) {
+      return 'Wallet connection required to load data.';
     }
 
-    // 追加到用户的对话历史
-    userConversations[userId].memory += `\n${formattedMemory}`;
-    return `Memory loaded! CID: ${cid}`;
-  } catch (error) {
-    console.error('Failed to load memory:', error);
-    return 'Error loading memory. Check CID and password.';
+    const [_, cid, password] = userMessage.split(' ');
+    if (!cid || !password) {
+      return 'Please provide both CID and password: /load CID password';
+    }
+
+    try {
+      const fileContent = await downloadFileFromAutoDrive(cid, password);
+
+      let formattedMemory: string;
+      if (typeof fileContent === 'object') {
+        formattedMemory = JSON.stringify(fileContent, null, 2); // JSON 格式
+      } else if (typeof fileContent === 'string') {
+        formattedMemory = fileContent; // 纯文本格式
+      } else {
+        console.warn('Non-textual file detected. Skipping memory update.');
+        return 'Loaded file is not in a readable format (JSON or text).';
+      }
+
+      // Ensure memory is updated correctly
+      userConversations[userId].memory += `\n${formattedMemory}`;
+      return `Memory loaded! CID: ${cid}`;
+    } catch (error) {
+      console.error('Failed to load memory:', error);
+      return 'Error loading memory. Check CID and password.';
+    }
   }
-}
 
   // Process normal chat messages
   try {
