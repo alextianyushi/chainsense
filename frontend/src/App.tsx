@@ -169,7 +169,7 @@ function App() {
     while (attempts < maxAttempts) {
       try {
         const response = await axios.post<{ success: boolean; message: string }>(
-          'http://localhost:5001/api/check-payment',
+          'https://chainsense.onrender.com/api/check-payment',
           { txHash, userId },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -199,7 +199,7 @@ function App() {
   const resetUsage = async (txHash: string) => {
     try {
       const response = await axios.post<{ success: boolean; message: string }>(
-        'http://localhost:5001/api/reset-usage',
+        'https://chainsense.onrender.com/api/reset-usage',
         { userId, txHash },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -249,7 +249,7 @@ function App() {
       // Call /api/save
       try {
         const response = await axios.post<{ message: string }>(
-          'http://localhost:5001/api/save',
+          'https://chainsense.onrender.com/api/save',
           { userId, password },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -308,7 +308,7 @@ function App() {
       // Call /api/load
       try {
         const response = await axios.post<{ message: string }>(
-          'http://localhost:5001/api/load',
+          'https://chainsense.onrender.com/api/load',
           { userId, cid, password },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -349,7 +349,7 @@ function App() {
     // If not a command, send to /api/chat
     try {
       const response = await axios.post<ChatResponse>(
-        'http://localhost:5001/api/chat',
+        'https://chainsense.onrender.com/api/chat',
         { message: trimmedInput, userId },
         { headers: { 'Content-Type': 'application/json' } }
       );
