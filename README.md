@@ -5,21 +5,25 @@ ChainSense is an innovative AI assistant that combines the power of artificial i
 ## ✨ Key Features
 
 ### 🔒 Secure Blockchain Storage
+
 - Store your conversations securely on Auto Drive (ai3.storage/drive)
 - All data is encrypted and preserved on the Autonomys blockchain
 - Access your chat history anytime, anywhere with complete privacy
 
 ### 💡 Intelligent Conversations
+
 - Engage in meaningful discussions about any topic
 - Get help with brainstorming, problem-solving, and creative tasks
 - Experience natural, context-aware responses
 
 ### 📚 Knowledge Retrieval (RAG)
-- Load previous conversations using simple commands
+
+- Load on-chain data using simple commands
 - Utilize RAG (Retrieval-Augmented Generation) for more informed responses
 - Access your stored knowledge base seamlessly
 
 ### 🌐 Web3 Integration
+
 - Connect your MetaMask wallet for enhanced features
 - Secure authentication and transaction capabilities
 - Seamless blockchain interaction
@@ -28,13 +32,14 @@ ChainSense is an innovative AI assistant that combines the power of artificial i
 
 1. Connect your MetaMask wallet (optional but recommended)
 2. Start chatting with Linky, your AI assistant
-3. Use special commands to save and load conversations:
+3. Use special commands to save and load content:
    - Save: `/save your_password`
    - Load: `/load CID your_password`
 
 ## 💎 Premium Features
 
 ChainSense operates on a fair usage policy. After reaching the free API limit:
+
 - Continue using the service with a small AI3 payment
 - Automatic transaction handling through MetaMask
 - Instant access restoration after payment
@@ -49,7 +54,7 @@ ChainSense operates on a fair usage policy. After reaching the free API limit:
 
 ## 🌟 Why Choose ChainSense?
 
-- **Privacy**: Your conversations are yours alone
+- **Privacy**: Your data are yours alone
 - **Persistence**: Never lose important discussions
 - **Intelligence**: Advanced AI capabilities
 - **Security**: Blockchain-backed storage
