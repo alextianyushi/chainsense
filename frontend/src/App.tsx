@@ -420,7 +420,7 @@ function App() {
         
         Just so you know, every conversation we have can be safely stored on Auto Drive (https://ai3.storage/drive), powered by the Autonomys blockchain. This means your records are securely encrypted and always accessible.
   
-        If you ever want to save our chat, simply type '/save password'. To revisit past memories, type '/load CID password', and I'll load that conversation right into my local memory. Let's dive in and make some magic happen! ✨
+        If you ever want to save our chat, login in first through metamask and simply type '/save password'. To revisit past memories, type '/load CID password', and I'll load that conversation right into my local memory. Let's dive in and make some magic happen! ✨
       `,
     };
     setMessages([welcomeMessage]);
