@@ -73,6 +73,10 @@ function App() {
         setUserId(walletAddress);
         localStorage.setItem('sessionId', walletAddress);
         alert(`Wallet connected: ${walletAddress}`);
+
+        // Add a message to the chat to prompt the user
+        const loginMessage: Message = { sender: 'ai', text: 'Try save/load after logging in.' };
+        setMessages((prev) => [...prev, loginMessage]);
       } else {
         alert('No accounts found. Please check your MetaMask wallet.');
       }
