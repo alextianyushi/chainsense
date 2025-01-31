@@ -41,6 +41,8 @@ function App() {
     return sessionId;
   });
 
+  const apiUrl = "https://chainsense.onrender.com"; // 将端口更改为5001
+
   useEffect(() => {
     document.title = 'ChainSense - Your Secure Assistant';
   }, []);
@@ -73,10 +75,6 @@ function App() {
         setUserId(walletAddress);
         localStorage.setItem('sessionId', walletAddress);
         alert(`Wallet connected: ${walletAddress}`);
-
-        // Add a message to the chat to prompt the user
-        const loginMessage: Message = { sender: 'ai', text: 'Try save/load after logging in.' };
-        setMessages((prev) => [...prev, loginMessage]);
       } else {
         alert('No accounts found. Please check your MetaMask wallet.');
       }
@@ -88,10 +86,8 @@ function App() {
 
   // Disconnect Wallet
   const handleDisconnectWallet = () => {
-    const sessionId = uuidv4();
-    localStorage.setItem('sessionId', sessionId);
-    setUserId(sessionId);
-    alert('Wallet disconnected. Using temporary session ID.');
+    alert('Wallet disconnected. Please log in again.');
+    setUserId('');
   };
 
   // Initiate Payment
@@ -173,7 +169,7 @@ function App() {
     while (attempts < maxAttempts) {
       try {
         const response = await axios.post<{ success: boolean; message: string }>(
-          'https://chainsense.onrender.com/api/check-payment',
+          `${apiUrl}/api/check-payment`,
           { txHash, userId },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -203,7 +199,7 @@ function App() {
   const resetUsage = async (txHash: string) => {
     try {
       const response = await axios.post<{ success: boolean; message: string }>(
-        'https://chainsense.onrender.com/api/reset-usage',
+        `${apiUrl}/api/reset-usage`,
         { userId, txHash },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -252,7 +248,7 @@ function App() {
       // Call /api/save
       try {
         const response = await axios.post<{ message: string }>(
-          'https://chainsense.onrender.com/api/save',
+          `${apiUrl}/api/save`,
           { userId, password },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -308,7 +304,7 @@ function App() {
       // Call /api/load
       try {
         const response = await axios.post<{ data: any }>(
-          'https://chainsense.onrender.com/api/load',
+          `${apiUrl}/api/load`,
           { userId, cid, password },
           { headers: { 'Content-Type': 'application/json' } }
         );
@@ -376,7 +372,7 @@ function App() {
     // If not a command, send to /api/chat
     try {
       const response = await axios.post<ChatResponse>(
-        'https://chainsense.onrender.com/api/chat',
+        `${apiUrl}/api/chat`,
         { message: trimmedInput, userId },
         { headers: { 'Content-Type': 'application/json' } }
       );

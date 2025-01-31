@@ -126,7 +126,7 @@ app.post('/api/load', checkUsageLimit, async (req: Request, res: Response): Prom
     res.json({ message: loadResponse });
   } catch (error: any) {
     console.error('Error loading memory:', error.message);
-    res.status(500).json({ error: 'Failed to load memory.' });
+    res.status(500).json({ error: 'Failed to load memory. Please try again later.' });
   }
 });
 

@@ -93,8 +93,11 @@ export async function downloadFileFromAutoDrive(
 
     // Return buffer otherwise
     return fileBuffer;
-  } catch (error) {
-    console.error("Download failed:", error);
-    throw error;
+  } catch (error: any) {
+    console.error("Download failed:", error.message);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+    }
+    throw new Error('Failed to download file. Please check the CID and try again.');
   }
 }

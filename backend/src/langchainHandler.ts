@@ -97,8 +97,8 @@ export const handleLangChainChat = async (userMessage: string, userId: string): 
       // Ensure memory is updated correctly
       userConversations[userId].memory += `\n${formattedMemory}`;
       return `Memory loaded! CID: ${cid}`;
-    } catch (error) {
-      console.error('Failed to load memory:', error);
+    } catch (error: any) {
+      console.error('Failed to load memory:', error.message);
       return 'Error loading memory. Check CID and password.';
     }
   }
